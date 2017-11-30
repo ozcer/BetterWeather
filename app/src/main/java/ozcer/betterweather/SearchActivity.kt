@@ -28,8 +28,12 @@ class SearchActivity : AppCompatActivity() {
 
         listAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, searchResults)
         searchResultLv.adapter = listAdapter
-
+        searchResultLv.setOnItemClickListener { adapterView, view, i, l ->
+            toast("you pressed $i")
+        }
+        
         searchFieldEdt.setOnEditorActionListener() {v, actionId, event ->
+            // on enter pressed begin city search process
             if(actionId == EditorInfo.IME_ACTION_DONE){
                 val city = searchFieldEdt.text.toString()
                 searchCity(city)
@@ -43,8 +47,8 @@ class SearchActivity : AppCompatActivity() {
         doAsync {
             val returnString = URL(searchQueryBase+city).readText()
             val resultList = JSONObject(returnString).getJSONArray("RESULTS")
-            //Log.i("doa", "jsonarray: $resultList")
             uiThread {
+                // empty and repopulate list to display
                 searchResults.clear()
                 for (i in 0..resultList.length() -1) {
                     val entry = resultList.getJSONObject(i).getString("name")
