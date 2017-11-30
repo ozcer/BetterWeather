@@ -29,4 +29,14 @@
         app:layout_constraintRight_toRightOf="parent"
         />
 
+    <Button
+        android:id="@+id/searchBtn"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:fontFamily="@font/muli_bold"
+        android:text="search city"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
 </android.support.constraint.ConstraintLayout>
