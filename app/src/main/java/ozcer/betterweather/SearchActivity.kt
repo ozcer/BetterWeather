@@ -1,10 +1,12 @@
 package ozcer.betterweather
 
+import android.content.Context
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import kotlinx.android.synthetic.main.activity_search.*
 import org.jetbrains.anko.doAsync
@@ -24,8 +26,12 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
+        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager;
+        imm.showSoftInput(searchFieldEdt, InputMethodManager.SHOW_IMPLICIT)
+
         listAdapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, searchResults)
         searchResultLv.adapter = listAdapter
+
         searchResultLv.setOnItemClickListener { adapterView, view, i, l ->
             val intent = Intent(this, MainActivity::class.java)
             intent.putExtra("CITY_EXTENTION", cityExtentions.get(i))
@@ -35,11 +41,14 @@ class SearchActivity : AppCompatActivity() {
         
         searchFieldEdt.setOnEditorActionListener() {v, actionId, event ->
             // on enter pressed begin city search process
-            if(actionId == EditorInfo.IME_ACTION_DONE){
+            if(actionId == EditorInfo.IME_ACTION_SEARCH) {
                 val city = searchFieldEdt.text.toString()
                 searchCity(city)
-                true
-            } else { false }
+                imm.showSoftInput(searchFieldEdt, InputMethodManager.SHOW_IMPLICIT)
+            }
+            // return false to close keyboard after hitting "search"
+            false
+
         }
 
     }

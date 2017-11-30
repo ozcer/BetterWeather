@@ -14,6 +14,7 @@
         android:hint="look for city"
         android:paddingHorizontal="10sp"
         android:inputType="text"
+        android:imeOptions="actionSearch"
         />
 
     <ListView
